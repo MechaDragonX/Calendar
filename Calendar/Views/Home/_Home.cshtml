@@ -1,0 +1,23 @@
+﻿<!-- ko with: home -->
+<div class="jumbotron">
+    <h1>Welcome!</h1>
+    <p class="lead">Click the buttons below to reach different parts of the application.</p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>View Calendar</h2>
+        <input type="button" value="Click Here" onclick="location.href='@Url.Action("", "Calendar")'" />
+    </div>
+
+    <div class="col-md-4">
+        <h2>View Events</h2>
+        <input type="button" value="Click Here" onclick="location.href='@Url.Action("Details", "Calendar")'" />
+    </div>
+
+    <div class="col-md-4">
+        <h2>Create a New Event</h2>
+        <input type="button" value="Click Here" onclick="location.href='@Url.Action("CreateEvent", "Calendar")'" />
+    </div>
+</div>
+
+<!-- /ko -->
