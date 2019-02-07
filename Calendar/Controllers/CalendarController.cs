@@ -85,13 +85,13 @@ namespace Calendar.Controllers
             {
                 // TODO: Add insert logic here
 
-                //open file stream
-                using (StreamWriter file = System.IO.File.CreateText(@"Calendar\Data\"))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    //serialize object directly into file stream
-                    serializer.Serialize(file, model);
-                }
+//                 //open file stream
+//                 using (StreamWriter file = System.IO.File.CreateText(@"Calendar\Data\"))
+//                 {
+//                     JsonSerializer serializer = new JsonSerializer();
+//                     //serialize object directly into file stream
+//                     serializer.Serialize(file, model);
+//                 }
 
                 return RedirectToAction("Details", new List<EventViewModel> { model });
             }
