@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
+using Calendar.Repository;
 
 namespace Calendar.Controllers
 {
@@ -17,6 +18,7 @@ namespace Calendar.Controllers
 
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private List<EventViewModel> _events;
 
         public CalendarController()
         {
@@ -65,12 +67,13 @@ namespace Calendar.Controllers
         //}
 
         // GET: Calendar/Details/5
-        public ActionResult Details(List<EventViewModel> events)
+        public async Task<ActionResult> Details()
         {
-            events = new List<EventViewModel>();
-            events.Add(new EventViewModel { Description = "sdasd", Name = "dfsdfsdfdsf" });
+            IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(x => x.Creator.Equals(User.Identity.Name));
+
             return View("ViewEvent", events);
         }
+
         // GET: Calendar/Create
         public ActionResult Create()
         {
@@ -83,21 +86,20 @@ namespace Calendar.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                model.Id = Guid.NewGuid();
+                model.Creator = User.Identity.Name;
+                model.CreationDateTime = DateTime.UtcNow;
 
-//                 //open file stream
-//                 using (StreamWriter file = System.IO.File.CreateText(@"Calendar\Data\"))
-//                 {
-//                     JsonSerializer serializer = new JsonSerializer();
-//                     //serialize object directly into file stream
-//                     serializer.Serialize(file, model);
-//                 }
+                model.StartDate = model.StartDate.Add(model.StartTime.TimeOfDay);
+                model.EndDate = model.EndDate.Add(model.EndTime.TimeOfDay);
 
-                return RedirectToAction("Details", new List<EventViewModel> { model });
+                await DocumentDBRepository<EventViewModel>.CreateItemAsync(model);
+
+                return RedirectToAction("Details");
             }
             catch
             {
-                return View();
+                return View("CreateEvent");
             }
         }
 
@@ -124,9 +126,11 @@ namespace Calendar.Controllers
         }
 
         // GET: Calendar/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(Guid id)
         {
-            return View();
+            await DocumentDBRepository<EventViewModel>.DeleteItemAsync(id);
+
+            return RedirectToAction("Details");
         }
 
         // POST: Calendar/Delete/5
