@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Calendar.Models.EventViewModel>
+
+@{
+    int daysInMonth = DateTime.DaysInMonth(ViewBag.Year, ViewBag.Month);
+    DateTime firstDay = new DateTime(ViewBag.Year, ViewBag.Month, 1);
+    DateTime lastDay = new DateTime(ViewBag.Year, ViewBag.Month, daysInMonth);
+
+    ViewBag.Title = firstDay.ToString("MMMM yyy");
+
+    int numberOfWeeks = 4;
+    int firstDayOfWeek = (int)firstDay.DayOfWeek;
+    if (firstDay.DayOfWeek != DayOfWeek.Sunday || lastDay.DayOfWeek != DayOfWeek.Saturday)
+    {
+        numberOfWeeks++;
+    }
+}
+
+<h2>@ViewBag.Title</h2>
+
+@*@{
+    int year = ViewBag.Year;
+    int month = ViewBag.Month;
+}
+<div class="col-md-4">
+    <input type="button" value="&laquo"
+           onclick="location.href='
+           @{
+               month--;
+               if (month == 0)
+               {
+                   year--;
+                   month = 12;
+               }
+               @Url.Action("Calendar", "Calendar", new { year, month })
+            }
+           '" />
+</div>
+<div class="col-md-4">
+    <input type="button" value="&raquo"
+            onclick="location.href='
+        @{
+            month++;
+            if (month == 12)
+            {
+                year++;
+                month = 1;
+            }
+            @Url.Action("Calendar", "Calendar", new { year, month })
+        }
+        '" />
+</div>*@
+
+<table class="table">
+    <tr>
+        @{ string weekDay = "";
+            for (int i = 0; i <= (int)DayOfWeek.Saturday; i++)
+            {
+                <th>
+                    @{
+                        weekDay = ((DayOfWeek)i).ToString();
+                        @weekDay
+                    }
+                </th>
+            }
+        }
+    </tr>
+    @{
+        int count = 0;
+        int day = 1;
+        for (int i = 0; i < numberOfWeeks; i++)
+        {
+            <tr>
+                @{
+                    for (int j = 0; j < 7; j++)
+                    {
+                        if (count < firstDayOfWeek)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            <td>
+                                &nbsp;
+                            </td>
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else
+                        {
+                            if (day <= daysInMonth)
+                            {
+                                <td>
+                                    @day
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    &nbsp;
+                                </td>
+                            }
+                            day++;
+                        }
+                        count++;
+                    }
+                }
+            </tr>
+        }
+    }
+</table>

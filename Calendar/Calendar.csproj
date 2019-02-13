@@ -383,6 +383,8 @@
     <Content Include="Scripts\knockout.validation.min.js.map" />
     <Content Include="Views\Calendar\CreateEvent.cshtml" />
     <Content Include="Views\Calendar\ViewEvent.cshtml" />
+    <Content Include="Views\Calendar\EditEvent.cshtml" />
+    <Content Include="Views\Calendar\Calendar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

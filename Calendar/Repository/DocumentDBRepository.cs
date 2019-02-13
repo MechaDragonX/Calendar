@@ -120,15 +120,23 @@ namespace Calendar.Repository
             }
         }
 
-        public static async Task<Document> GetItemAsync(Guid id)
+        public static async Task<T> GetItemAsync(Guid id)
         {
             try
             {
-                return await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()));
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), new RequestOptions { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(id.ToString()) });
+                return (T)(dynamic)document;
             }
-            catch (Exception e)
+            catch (DocumentClientException e)
             {
-                throw;
+                if (e.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
     }

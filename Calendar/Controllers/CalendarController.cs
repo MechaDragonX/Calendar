@@ -54,9 +54,17 @@ namespace Calendar.Controllers
             }
         }
 
-        // GET: Calendar
+        // GET: Calendar/CreateEvent
         public ActionResult CreateEvent()
         {
+            return View();
+        }
+
+        // GET: Calendar/Calendar
+        public ActionResult Calendar(int year, int month)
+        {
+            ViewBag.Year = year;
+            ViewBag.Month = month;
             return View();
         }
 
@@ -104,14 +112,17 @@ namespace Calendar.Controllers
         }
 
         // GET: Calendar/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(Guid id)
         {
-            return View();
+            EventViewModel item = await DocumentDBRepository<EventViewModel>.GetItemAsync(id);
+            item.StartTime = item.StartTime.Add(item.StartDate.TimeOfDay);
+            item.EndTime =  item.EndTime.Add(item.EndDate.TimeOfDay);
+            return View("EditEvent", item);
         }
 
         // POST: Calendar/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Guid id, EventViewModel model)
         {
             try
             {
