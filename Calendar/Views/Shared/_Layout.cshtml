@@ -3,6 +3,8 @@
 <head>
     @{
         ViewBag.Title = "Calendar";
+        ViewBag.Year = DateTime.Now.Year;
+        ViewBag.Month = DateTime.Now.Month;
     }
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
@@ -25,7 +27,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>
-                    <li>@Html.ActionLink("View Calendar", "", "Calendar", new { area = "" }, null)</li> <!-- Change these -->
+                    <li>@Html.ActionLink("View Calendar", "Calendar", "Calendar", new { ViewBag.Year, ViewBag.Month }, null)</li>
                     <li>@Html.ActionLink("View Events", "Details", "Calendar", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("New Event", "CreateEvent", "Calendar", new { area = "" }, null)</li>
                 </ul>

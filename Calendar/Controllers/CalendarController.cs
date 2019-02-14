@@ -18,7 +18,6 @@ namespace Calendar.Controllers
 
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private List<EventViewModel> _events;
 
         public CalendarController()
         {
@@ -60,11 +59,21 @@ namespace Calendar.Controllers
             return View();
         }
 
-        // GET: Calendar/Calendar
-        public ActionResult Calendar(int year, int month)
+     
+
+        // GET: Calendar/Calendar?year=x&month=y
+        public ActionResult Calendar( int year, int month)
         {
-            ViewBag.Year = year;
-            ViewBag.Month = month;
+            if (year == 0 && month == 0)
+            {
+                ViewBag.Year = DateTime.Now.Year;
+                ViewBag.Month = DateTime.Now.Month;
+            }
+            else
+            {
+                ViewBag.Year = year;
+                ViewBag.Month = month;
+            }
             return View();
         }
 

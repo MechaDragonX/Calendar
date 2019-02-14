@@ -17,38 +17,42 @@
 
 <h2>@ViewBag.Title</h2>
 
-@*@{
+@{
     int year = ViewBag.Year;
     int month = ViewBag.Month;
+
+    string Previous(int currentYear, int currentMonth)
+    {
+        int newMonth = currentMonth - 1;
+        int newYear = currentYear;
+
+        if (newMonth == 0)
+        {
+            newYear--;
+            newMonth = 12;
+        }
+        return @Url.Action("Calendar", "Calendar", new { year = newYear, month = newMonth });
+    }
+
+    string Next(int currentYear, int currentMonth)
+    {
+        int newMonth = currentMonth + 1;
+        int newYear = currentYear;
+
+        if (newMonth > 12)
+        {
+            newYear++;
+            newMonth = 1;
+        }
+        return @Url.Action("Calendar", "Calendar", new { year = newYear, month = newMonth });
+    }
 }
 <div class="col-md-4">
-    <input type="button" value="&laquo"
-           onclick="location.href='
-           @{
-               month--;
-               if (month == 0)
-               {
-                   year--;
-                   month = 12;
-               }
-               @Url.Action("Calendar", "Calendar", new { year, month })
-            }
-           '" />
+    <input type="button" value="&laquo" onclick="location.href='@Previous(year, month)'" />
 </div>
 <div class="col-md-4">
-    <input type="button" value="&raquo"
-            onclick="location.href='
-        @{
-            month++;
-            if (month == 12)
-            {
-                year++;
-                month = 1;
-            }
-            @Url.Action("Calendar", "Calendar", new { year, month })
-        }
-        '" />
-</div>*@
+    <input type="button" value="&raquo" onclick="location.href='@Next(year, month)'" />
+</div>
 
 <table class="table">
     <tr>
