@@ -58,43 +58,55 @@ namespace Calendar.Controllers
         {
             return View();
         }
-
-     
-
+        
         // GET: Calendar/Calendar?year=x&month=y
-        public ActionResult Calendar( int year, int month)
+        public async Task<ActionResult> Calendar(int year, int month)
         {
-            if (year == 0 && month == 0)
-            {
-                ViewBag.Year = DateTime.Now.Year;
-                ViewBag.Month = DateTime.Now.Month;
-            }
-            else
-            {
-                ViewBag.Year = year;
-                ViewBag.Month = month;
-            }
-            return View();
+            ViewBag.Year = year;
+            ViewBag.Month = month;
+            DateTime current = new DateTime(year, month, 1);
+            IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(SelectEventsForMonth(current));
+
+            return View("Calendar", events);
+
         }
 
-        // GET: Calendar/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
-
-        // GET: Calendar/Details/5
-        public async Task<ActionResult> Details()
+        // GET: Calendar/Calendar
+        public async Task<ActionResult> Month(int year, int month)
         {
-            IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(x => x.Creator.Equals(User.Identity.Name));
+            DateTime current = new DateTime(year, month, 1);
+            IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(SelectEventsForMonth(current));
+
+            return View("Calendar", events);
+        }
+
+
+        // GET: Calendar/Day
+        public async Task<ActionResult> Day(int year, int month, int day)
+        {
+            DateTime current = new DateTime(year, month, day);
+            IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(x => x.Creator.Equals(User.Identity.Name) && (x.StartDate.Equals(current) || x.EndDate.Equals(current)));
 
             return View("ViewEvent", events);
         }
 
-        // GET: Calendar/Create
-        public ActionResult Create()
+      
+
+        private System.Linq.Expressions.Expression<Func<EventViewModel, bool>> SelectEventsForMonth(DateTime current)
         {
-            return View();
+            return x => x.Creator.Equals(User.Identity.Name) &&
+                        (x.StartDate.Year.Equals(current.Year) || x.EndDate.Year.Equals(current.Year)) &&
+                       (x.StartDate.Month.Equals(current.Month) || x.EndDate.Month.Equals(current.Month));
+                
+            
+        }
+
+        // GET: Calendar/Details/5
+        public async Task<ActionResult> Details()
+        {
+            IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync( x => x.Creator.Equals(User.Identity.Name));
+
+            return View("ViewEvent", events);
         }
 
         // POST: Calendar/Create

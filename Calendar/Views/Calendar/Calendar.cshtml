@@ -73,38 +73,47 @@
         int day = 1;
         for (int i = 0; i < numberOfWeeks; i++)
         {
-            <tr>
-                @{
-                    for (int j = 0; j < 7; j++)
+    <tr>
+        @{
+            for (int j = 0; j < 7; j++)
+            {
+                if (count < firstDayOfWeek)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    <td>
+                        &nbsp;
+                    </td>
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    if (day <= daysInMonth)
                     {
-                        if (count < firstDayOfWeek)
+                        if (day.Equals(DateTime.Now.Day))
                         {
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            <td>
-                                &nbsp;
+                            <td style="border-left: 6px #1e90ff; background-color: #87ceff;">
+                                @day
                             </td>
-                            Console.ForegroundColor = ConsoleColor.White;
                         }
                         else
                         {
-                            if (day <= daysInMonth)
-                            {
-                                <td>
-                                    @day
-                                </td>
-                            }
-                            else
-                            {
-                                <td>
-                                    &nbsp;
-                                </td>
-                            }
-                            day++;
+                            <td>
+                                @day
+                            </td>
                         }
-                        count++;
                     }
+                    else
+                    {
+                        <td>
+                            &nbsp;
+                        </td>
+                    }
+                    day++;
                 }
-            </tr>
+                count++;
+            }
+        }
+    </tr>
         }
     }
 </table>
