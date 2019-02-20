@@ -68,37 +68,36 @@
             }
         }
     </tr>
-    @{
-        int count = 0;
-        int day = 1;
-        for (int i = 0; i < numberOfWeeks; i++)
-        {
-    <tr>
-        @{
+@{
+    int count = 0;
+    int day = 1;
+    DateTime current = new DateTime(ViewBag.Year, ViewBag.Month, day);
+    for (int i = 0; i < numberOfWeeks; i++)
+    {
+        <tr>
+            @{
             for (int j = 0; j < 7; j++)
             {
                 if (count < firstDayOfWeek)
                 {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    <td>
-                        &nbsp;
-                    </td>
-                    Console.ForegroundColor = ConsoleColor.White;
+                        <td>
+                            &nbsp;
+                        </td>
                 }
                 else
                 {
                     if (day <= daysInMonth)
                     {
-                        if (day.Equals(DateTime.Now.Day))
+                        if (current.Year == DateTime.Now.Year && current.Month == DateTime.Now.Month && current.Day == DateTime.Now.Day)
                         {
-                            <td style="border-left: 6px #1e90ff; background-color: #87ceff;">
-                                @day
+                            <td style="border-left: 6px solid #1e90ff; background-color: #87ceff;">
+                                @checkForEvents()
                             </td>
                         }
                         else
                         {
                             <td>
-                                @day
+                                @checkForEvents()
                             </td>
                         }
                     }
@@ -109,11 +108,30 @@
                         </td>
                     }
                     day++;
+                    if (day <= daysInMonth)
+                    {
+                        current = new DateTime(ViewBag.Year, ViewBag.Month, day);
+                    }
                 }
                 count++;
             }
         }
-    </tr>
-        }
+        </tr>
     }
+}
 </table>
+
+@{
+    MvcHtmlString checkForEvents()
+    {
+        foreach (var item in Model)
+        {
+            if (item.StartDate.Day == current.Day || item.EndDate.Day == current.Day)
+            {
+                
+                return Html.ActionLink(day.ToString(), "Day", "Calendar", new { current.Year, current.Month, current.Day }, new { @style = "font:bold;" });
+            }
+        }
+        return new MvcHtmlString(current.Day.ToString());
+    }
+}

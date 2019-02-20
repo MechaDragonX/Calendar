@@ -124,7 +124,9 @@ namespace Calendar.Repository
         {
             try
             {
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), new RequestOptions { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(id.ToString()) });
+                // Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), new RequestOptions { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(id.ToString()) });
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()));
+
                 return (T)(dynamic)document;
             }
             catch (DocumentClientException e)
