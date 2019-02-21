@@ -15,16 +15,16 @@ namespace Calendar.Models
 
         public DateTime CreationDateTime { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter a name for the event.")]
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the date when the will begin.")]
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the date when the will end.")]
         [DataType(DataType.Date)]
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
@@ -33,17 +33,15 @@ namespace Calendar.Models
         [DataType(DataType.Time)]
         [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; }
-
+        
         [JsonIgnore]
         [DataType(DataType.Time)]
         [Display(Name = "End Time")]
         public DateTime EndTime { get; set; }
 
-        [Required]
         [Display(Name = "All Day")]
         public bool IsAllDay { get; set; }
 
-        [Required]
         [Display(Name = "Repeating")]
         public bool IsRepeating { get; set; }
 
@@ -52,5 +50,9 @@ namespace Calendar.Models
 
         [Display(Name = "Description")]
         public string Description { get; set; }
+
+        //[DataType(DataType.)]
+        //[Display(Name = "color")]
+        //public string color { get; set; }
     }
 }

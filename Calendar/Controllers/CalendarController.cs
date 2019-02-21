@@ -104,16 +104,29 @@ namespace Calendar.Controllers
         {
             try
             {
-                model.Id = Guid.NewGuid();
-                model.Creator = User.Identity.Name;
-                model.CreationDateTime = DateTime.UtcNow;
+                ModelState.Remove("StartTime");
+                ModelState.Remove("EndTime");
+                if (model.StartDate > model.EndDate)
+                {
+                    ModelState.AddModelError("StartDate", "The Start Date must be before the End Date.");
+                }
+                if (ModelState.IsValid)
+                {
+                    model.Id = Guid.NewGuid();
+                    model.Creator = User.Identity.Name;
+                    model.CreationDateTime = DateTime.UtcNow;
+                    
+                    model.StartDate = model.StartDate.Add(model.StartTime.TimeOfDay);
+                    model.EndDate = model.EndDate.Add(model.EndTime.TimeOfDay);
 
-                model.StartDate = model.StartDate.Add(model.StartTime.TimeOfDay);
-                model.EndDate = model.EndDate.Add(model.EndTime.TimeOfDay);
+                    await DocumentDBRepository<EventViewModel>.CreateItemAsync(model);
 
-                await DocumentDBRepository<EventViewModel>.CreateItemAsync(model);
-
-                return RedirectToAction("Details");
+                    return RedirectToAction("Details");
+                }
+                else
+                {
+                    return View("CreateEvent");
+                }
             }
             catch
             {

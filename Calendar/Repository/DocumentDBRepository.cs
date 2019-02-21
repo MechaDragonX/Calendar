@@ -112,7 +112,8 @@ namespace Calendar.Repository
         {
             try
             {
-                return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), new RequestOptions { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(id.ToString()) });
+                // return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), new RequestOptions { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(id.ToString()) });
+                return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()));
             }
             catch (Exception e)
             {

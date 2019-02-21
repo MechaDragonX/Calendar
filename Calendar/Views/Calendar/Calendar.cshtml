@@ -47,12 +47,12 @@
         return @Url.Action("Calendar", "Calendar", new { year = newYear, month = newMonth });
     }
 }
-<div class="col-md-4">
+<div class="col-lg-8">
     <input type="button" value="&laquo" onclick="location.href='@Previous(year, month)'" />
 </div>
-<div class="col-md-4">
+<dic class="col-lg-2">
     <input type="button" value="&raquo" onclick="location.href='@Next(year, month)'" />
-</div>
+</dic>
 
 <table class="table">
     <tr>
@@ -90,15 +90,41 @@
                     {
                         if (current.Year == DateTime.Now.Year && current.Month == DateTime.Now.Month && current.Day == DateTime.Now.Day)
                         {
-                            <td style="border-left: 6px solid #1e90ff; background-color: #87ceff;">
-                                @checkForEvents()
-                            </td>
+                        <td style="border-left: 6px solid #1e90ff; background-color: #87ceff;">
+                            <div>
+                                @day
+                            </div>
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    if ((item.StartDate.Year == current.Year || item.EndDate.Year == current.Year) && (item.StartDate.Month == current.Month || item.EndDate.Month == current.Month) && (item.StartDate.Day == current.Day || item.EndDate.Day == current.Day))
+                                    {
+                                        <div>
+                                            @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null);
+                                        </div>
+                                    }
+                                }
+                            }
+                        </td>
                         }
                         else
                         {
-                            <td>
-                                @checkForEvents()
-                            </td>
+                        <td>
+                            <div>
+                                @day
+                            </div>
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    if (item.StartDate == current || item.EndDate == current)
+                                    {
+                                        <div style="background-color:red; border: 1px solid black;">
+                                            @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null);
+                                        </div>
+                                    }
+                                }
+                             }
+                        </td>
                         }
                     }
                     else
@@ -115,7 +141,7 @@
                 }
                 count++;
             }
-        }
+            }
         </tr>
     }
 }
@@ -128,7 +154,6 @@
         {
             if (item.StartDate.Day == current.Day || item.EndDate.Day == current.Day)
             {
-                
                 return Html.ActionLink(day.ToString(), "Day", "Calendar", new { current.Year, current.Month, current.Day }, new { @style = "font:bold;" });
             }
         }
