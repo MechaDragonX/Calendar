@@ -2257,9 +2257,27 @@ caption {
   color: #777;
   text-align: left;
 }
-th {
-  text-align: left;
+
+/*Table Formatting I Added*/
+.table-fixedHead tbody {
+    overflow-y: auto;
+    height: 100px;
+    width: 100%;
+    border: 1px solid black;
+    margin-bottom: 1px;
 }
+.table-fixedHead thead tr {
+    height: 50px;
+    width: 100%;
+    background-color: dimgray;
+    border: 1px solid black;
+    color: white;
+    text-align: center;
+}
+.table-fixedHead td {
+    border: 1px solid black;
+}
+
 .table {
   width: 100%;
   max-width: 100%;
@@ -2303,7 +2321,9 @@ th {
   padding: 5px;
 }
 .table-bordered {
-  border: 1px solid #ddd;
+    border: 1px solid #ddd;
+    margin: 10px 15px 10px 5px;
+
 }
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
@@ -2316,6 +2336,7 @@ th {
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px;
+  
 }
 .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #f9f9f9;

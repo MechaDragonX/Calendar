@@ -59,11 +59,12 @@ namespace Calendar.Controllers
             return View();
         }
         
-        // GET: Calendar/Calendar?year=x&month=y
-        public async Task<ActionResult> Calendar(int year, int month)
+        // GET: Calendar/Calendar?year=x&month=y&day=z
+        public async Task<ActionResult> Calendar(int year, int month, int day)
         {
             ViewBag.Year = year;
             ViewBag.Month = month;
+            ViewBag.Day = day;
             DateTime current = new DateTime(year, month, 1);
             IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(x => x.Creator.Equals(User.Identity.Name));
             events = events.Where(x => (x.StartDate.Year == current.Year || x.EndDate.Year == current.Year) && (x.StartDate.Month == current.Month  || x.EndDate.Month == current.Month)).ToList();
