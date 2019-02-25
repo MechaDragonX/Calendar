@@ -59,17 +59,29 @@ namespace Calendar.Controllers
             return View();
         }
         
-        // GET: Calendar/Calendar?year=x&month=y&day=z
-        public async Task<ActionResult> Calendar(int year, int month, int day)
+        // GET: Calendar/Calendar?year=x&month=y
+        public async Task<ActionResult> Month(int year, int month) // Month View
         {
             ViewBag.Year = year;
             ViewBag.Month = month;
-            ViewBag.Day = day;
             DateTime current = new DateTime(year, month, 1);
             IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(x => x.Creator.Equals(User.Identity.Name));
             events = events.Where(x => (x.StartDate.Year == current.Year || x.EndDate.Year == current.Year) && (x.StartDate.Month == current.Month  || x.EndDate.Month == current.Month)).ToList();
 
-            return View("Calendar", events);
+            return View("Month", events);
+
+        }
+        // GET: Calendar/Calendar?year=x&month=y&day=z
+        public async Task<ActionResult> Week(int year, int month, int day) // Week view
+        {
+            ViewBag.Year = year;
+            ViewBag.Month = month;
+            ViewBag.Day = day;
+            DateTime current = new DateTime(year, month, day);
+            IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(x => x.Creator.Equals(User.Identity.Name));
+            events = events.Where(x => (x.StartDate.Year == current.Year || x.EndDate.Year == current.Year) && (x.StartDate.Month == current.Month || x.EndDate.Month == current.Month)).ToList();
+
+            return View("Week", events);
 
         }
 
@@ -81,14 +93,6 @@ namespace Calendar.Controllers
             events = events.Where(x => (x.StartDate.Year == current.Year || x.EndDate.Year == current.Year) && (x.StartDate.Month == current.Month || x.EndDate.Month == current.Month) && (x.StartDate.Day == current.Day || x.EndDate.Day == current.Day));
 
             return View("ViewEvent", events);
-        }
-
-        private System.Linq.Expressions.Expression<Func<EventViewModel, bool>> SelectEventsForDay(DateTime current)
-        {
-            return x => x.Creator.Equals(User.Identity.Name) &&
-                        (x.StartDate.Year == current.Year || x.EndDate.Year == current.Year) &&
-                        (x.StartDate.Month == current.Month || x.EndDate.Month == current.Month)
-                        && (x.StartDate.Day == current.Day || x.EndDate.Day == current.Day);
         }
 
         // GET: Calendar/Details/5

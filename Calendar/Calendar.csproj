@@ -384,7 +384,8 @@
     <Content Include="Views\Calendar\CreateEvent.cshtml" />
     <Content Include="Views\Calendar\ViewEvent.cshtml" />
     <Content Include="Views\Calendar\EditEvent.cshtml" />
-    <Content Include="Views\Calendar\Calendar.cshtml" />
+    <Content Include="Views\Calendar\Month.cshtml" />
+    <Content Include="Views\Calendar\Week.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
