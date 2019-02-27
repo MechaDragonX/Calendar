@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -27,7 +28,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>
-                    <li>@Html.ActionLink("View Calendar", "Calendar", "Calendar", new { ViewBag.Year, ViewBag.Month, ViewBag.Day }, null)</li>
+                    <li>@Html.ActionLink("View Calendar", "Month", "Calendar", new { ViewBag.Year, ViewBag.Month }, null)</li>
                     <li>@Html.ActionLink("View All Events", "Details", "Calendar", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Create a New Event", "CreateEvent", "Calendar", new { area = "" }, null)</li>
                 </ul>

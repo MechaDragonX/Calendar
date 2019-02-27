@@ -62,8 +62,8 @@ namespace Calendar.Controllers
         // GET: Calendar/Calendar?year=x&month=y
         public async Task<ActionResult> Month(int year, int month) // Month View
         {
-            ViewBag.Year = year;
-            ViewBag.Month = month;
+            ViewBag.Year = year != 0 ? year : DateTime.Now.Year;
+            ViewBag.Month = month != 0 ? month : DateTime.Now.Month;
             DateTime current = new DateTime(year, month, 1);
             IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(x => x.Creator.Equals(User.Identity.Name));
             events = events.Where(x => (x.StartDate.Year == current.Year || x.EndDate.Year == current.Year) && (x.StartDate.Month == current.Month  || x.EndDate.Month == current.Month)).ToList();
@@ -74,9 +74,9 @@ namespace Calendar.Controllers
         // GET: Calendar/Calendar?year=x&month=y&day=z
         public async Task<ActionResult> Week(int year, int month, int day) // Week view
         {
-            ViewBag.Year = year;
-            ViewBag.Month = month;
-            ViewBag.Day = day;
+            ViewBag.Year = year != 0 ? year : DateTime.Now.Year;
+            ViewBag.Month = month != 0 ? month : DateTime.Now.Month;
+            ViewBag.Day = day != 0 ? day : DateTime.Now.Day;
             DateTime current = new DateTime(year, month, day);
             IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(x => x.Creator.Equals(User.Identity.Name));
             events = events.Where(x => (x.StartDate.Year == current.Year || x.EndDate.Year == current.Year) && (x.StartDate.Month == current.Month || x.EndDate.Month == current.Month)).ToList();

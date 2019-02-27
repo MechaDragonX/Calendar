@@ -1,5 +1,7 @@
 @model IEnumerable<Calendar.Models.EventViewModel>
 
+@Scripts.Render("~/bundles/calendar")
+
 @{
     int daysInMonth = DateTime.DaysInMonth(ViewBag.Year, ViewBag.Month);
     DateTime firstDay = new DateTime(ViewBag.Year, ViewBag.Month, 1);
@@ -7,7 +9,7 @@
 
     ViewBag.Title = firstDay.ToString("MMMM yyy");
 
-    int numberOfWeeks = 4;
+    int numberOfWeeks = 4 + (daysInMonth % 7 != 0 ? 1 : 0);
     int firstDayOfWeek = (int)firstDay.DayOfWeek;
     if (firstDay.DayOfWeek != DayOfWeek.Sunday || lastDay.DayOfWeek != DayOfWeek.Saturday)
     {
@@ -26,81 +28,81 @@
     </p>
     <table class="table table-condensed table-fixedHead">
         @*  *@
-    <thead>
-        <tr>
-            <th class="col-md-1">
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th class="col-md-1">
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th class="col-md-1">
-                Start Time
-            </th>
-            <th class="col-md-1">
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th class="col-md-1">
-                End Time
-            </th>
-            <th class="col-md-1">
-                @Html.DisplayNameFor(model => model.IsAllDay)
-            </th>
-            <th class="col-md-1">
-                @Html.DisplayNameFor(model => model.IsRepeating)
-            </th>
-            <th class="col-md-1">
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th class="col-md-1">
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th class="col-md-1"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+        <thead>
             <tr>
-                <td class="col-md-1">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td class="col-md-1">
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td class="col-md-1">
-                    @Html.DisplayFor(modelItem => item.StartDate.TimeOfDay)
-                </td>
-                <td class="col-md-1">
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td class="col-md-1">
-                    @Html.DisplayFor(modelItem => item.EndDate.TimeOfDay)
-                </td>
-                <td class="col-md-1">
-                    @Html.DisplayFor(modelItem => item.IsAllDay)
-                </td>
-                <td class="col-md-1">
-                    @Html.DisplayFor(modelItem => item.IsRepeating)
-                </td>
-                <td class="col-md-1">
-                    @Html.DisplayFor(modelItem => item.Location)
-                </td>
-                <td class="col-md-1">
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td class="col-md-1">
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id, })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
+                <th class="col-md-1">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th class="col-md-1">
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th class="col-md-1">
+                    Start Time
+                </th>
+                <th class="col-md-1">
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th class="col-md-1">
+                    End Time
+                </th>
+                <th class="col-md-1">
+                    @Html.DisplayNameFor(model => model.IsAllDay)
+                </th>
+                <th class="col-md-1">
+                    @Html.DisplayNameFor(model => model.IsRepeating)
+                </th>
+                <th class="col-md-1">
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th class="col-md-1">
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th class="col-md-1"></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="col-md-1">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="col-md-1">
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td class="col-md-1">
+                        @Html.DisplayFor(modelItem => item.StartDate.TimeOfDay)
+                    </td>
+                    <td class="col-md-1">
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td class="col-md-1">
+                        @Html.DisplayFor(modelItem => item.EndDate.TimeOfDay)
+                    </td>
+                    <td class="col-md-1">
+                        @Html.DisplayFor(modelItem => item.IsAllDay)
+                    </td>
+                    <td class="col-md-1">
+                        @Html.DisplayFor(modelItem => item.IsRepeating)
+                    </td>
+                    <td class="col-md-1">
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td class="col-md-1">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td class="col-md-1">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id, })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 else
 {
-<h3>There are no events! Click @Html.ActionLink("here", "CreateEvent", "Calendar", new { area = "" }, null) to make one.</h3>
+    <h3>There are no events! Click @Html.ActionLink("here", "CreateEvent", "Calendar", new { area = "" }, null) to make one.</h3>
 }
 
 <hr />
@@ -144,114 +146,126 @@ else
     <input type="button" value="&raquo" onclick="location.href='@Next(year, month)'" />
 </div>
 
+<div>
+    @{
+        IEnumerable<SelectListItem> dropDownList = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Month", Value = "Month:" + ViewBag.Year + ":" + ViewBag.Month },
+            new SelectListItem { Text = "Week", Value = "Week:" + ViewBag.Year + ":" + ViewBag.Month }
+        };
+
+    }
+    @Html.DropDownList("selector", dropDownList, "Select View")
+</div>
+
 <table class="table">
-        <tr>
-            @{ string weekDay = "";
-                for (int i = 0; i <= (int)DayOfWeek.Saturday; i++)
-                {
-                    <th class="col-md-1">
-                        @{
-                            weekDay = ((DayOfWeek)i).ToString();
-                            @weekDay
-                        }
-                    </th>
-                }
-            }
-        </tr>
-        @{
-            int count = 0;
-            int day = 1;
-            DateTime current = new DateTime(ViewBag.Year, ViewBag.Month, day);
-            for (int i = 0; i < numberOfWeeks; i++)
+    <tr>
+        @{ string weekDay = "";
+            for (int i = 0; i <= (int)DayOfWeek.Saturday; i++)
             {
-                <tr>
+                <th class="col-md-1">
                     @{
-                        for (int j = 0; j < 7; j++)
+                        weekDay = ((DayOfWeek)i).ToString();
+                        @weekDay
+                    }
+                </th>
+            }
+        }
+    </tr>
+    @{
+        int count = 0;
+        int day = 1;
+        DateTime current = new DateTime(ViewBag.Year, ViewBag.Month, day);
+        for (int i = 0; i < numberOfWeeks; i++)
+        {
+            <tr>
+                @{
+                    for (int j = 0; j < 7; j++)
+                    {
+                        if (count < firstDayOfWeek)
                         {
-                            if (count < firstDayOfWeek)
+                            <td class="col-md-1">
+                                &nbsp;
+                            </td>
+                        }
+                        else
+                        {
+                            if (day <= daysInMonth)
+                            {
+                                if (current.Year == DateTime.Now.Year && current.Month == DateTime.Now.Month && current.Day == DateTime.Now.Day)
+                                {
+                                    <td style="border-left: 6px solid #1e90ff; background-color: #87ceff;">
+                                        <div>
+                                            @day
+                                        </div>
+                                        @{
+                                            foreach (var item in Model)
+                                            {
+                                                if ((item.StartDate.Year == current.Year && item.StartDate.Month == current.Month && item.StartDate.Day == current.Day) || (item.EndDate.Year == current.Year && item.EndDate.Month == current.Month && item.EndDate.Day == current.Day))
+                                                {
+                                                    <div style="background-color: #ff6347; border: 1px solid black;">
+                                                        @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                }
+                                else if (current.DayOfWeek.Equals(DayOfWeek.Saturday) || current.DayOfWeek.Equals(DayOfWeek.Sunday) && !(current.Year == DateTime.Now.Year && current.Month == DateTime.Now.Month && current.Day == DateTime.Now.Day))
+                                {
+                                    <td style="background-color: #00ee76;">
+                                        <div>
+                                            @day
+                                        </div>
+                                        @{
+                                            foreach (var item in Model)
+                                            {
+                                                if ((item.StartDate.Year == current.Year && item.StartDate.Month == current.Month && item.StartDate.Day == current.Day) || (item.EndDate.Year == current.Year && item.EndDate.Month == current.Month && item.EndDate.Day == current.Day))
+                                                {
+                                                    <div style="background-color: #ff6347; border: 1px solid black;">
+                                                        @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="col-md-1">
+                                        <div>
+                                            @day
+                                        </div>
+                                        @{
+                                            foreach (var item in Model)
+                                            {
+                                                if ((item.StartDate.Year == current.Year && item.StartDate.Month == current.Month && item.StartDate.Day == current.Day) || (item.EndDate.Year == current.Year && item.EndDate.Month == current.Month && item.EndDate.Day == current.Day))
+                                                {
+                                                    <div style="background-color: #ff6347; border: 1px solid black;">
+                                                        @Html.ActionLink(item.Name.ToString(), "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                }
+                            }
+                            else
                             {
                                 <td class="col-md-1">
                                     &nbsp;
                                 </td>
                             }
-                            else
+                            day++;
+                            if (day <= daysInMonth)
                             {
-                                if (day <= daysInMonth)
-                                {
-                                    if (current.Year == DateTime.Now.Year && current.Month == DateTime.Now.Month && current.Day == DateTime.Now.Day)
-                                    {
-                                        <td style="border-left: 6px solid #1e90ff; background-color: #87ceff;">
-                                            <div>
-                                                @day
-                                            </div>
-                                            @{
-                                                foreach (var item in Model)
-                                                {
-                                                    if (item.StartDate == current || item.EndDate == current)
-                                                    {
-                                                        <div style="background-color: #ff6347; border: 1px solid black;">
-                                                            @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
-                                                        </div>
-                                                    }
-                                                }
-                                            }
-                                        </td>
-                                    }
-                                    else if (current.DayOfWeek.Equals(DayOfWeek.Saturday) || current.DayOfWeek.Equals(DayOfWeek.Sunday) && !(current.Year == DateTime.Now.Year && current.Month == DateTime.Now.Month && current.Day == DateTime.Now.Day))
-                                    {
-                                        <td style="background-color: #00ee76;">
-                                            <div>
-                                                @day
-                                            </div>
-                                            @{
-                                                foreach (var item in Model)
-                                                {
-                                                    if (item.StartDate == current || item.EndDate == current)
-                                                    {
-                                                        <div style="background-color: #ff6347; border: 1px solid black;">
-                                                            @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
-                                                        </div>
-                                                    }
-                                                }
-                                            }
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td class="col-md-1">
-                                            <div>
-                                                @day
-                                            </div>
-                                            @{
-                                                foreach (var item in Model)
-                                                {
-                                                    if (item.StartDate == current || item.EndDate == current)
-                                                    {
-                                                        <div style="background-color: #ff6347; border: 1px solid black;">
-                                                            @Html.ActionLink(item.Name.ToString(), "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
-                                                        </div>
-                                                    }
-                                                }
-                                            }
-                                        </td>
-                                    }
-                                }
-                                else
-                                {
-                                    <td class="col-md-1">
-                                        &nbsp;
-                                    </td>
-                                }
-                                day++;
-                                if (day <= daysInMonth)
-                                {
-                                    current = new DateTime(ViewBag.Year, ViewBag.Month, day);
-                                }
+                                current = new DateTime(ViewBag.Year, ViewBag.Month, day);
                             }
-                            count++;
                         }
+                        count++;
                     }
-                </tr>
-            }
+                }
+            </tr>
         }
-    </table>
+    }
+</table>

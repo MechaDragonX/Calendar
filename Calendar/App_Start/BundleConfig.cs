@@ -40,6 +40,11 @@ namespace Calendar
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/Site.css"));
+
+            // Calendar Scripts
+            bundles.Add(new ScriptBundle("~/bundles/calendar").Include(
+                "~/Scripts/calendar/viewSelector.js"
+                ));
         }
     }
 }
