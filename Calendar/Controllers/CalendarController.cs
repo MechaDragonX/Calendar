@@ -115,6 +115,11 @@ namespace Calendar.Controllers
                 {
                     ModelState.AddModelError("StartDate", "The Start Date must be before the End Date.");
                 }
+                if (model.Frequency == RepeatingFrequency.None)
+                {
+                    model.IsRepeating = false;
+                }
+
                 if (ModelState.IsValid)
                 {
                     model.Id = Guid.NewGuid();

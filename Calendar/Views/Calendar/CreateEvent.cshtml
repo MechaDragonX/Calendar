@@ -1,16 +1,21 @@
 ﻿@model Calendar.Models.EventViewModel
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval");
+    @Scripts.Render("~/bundles/calendar");
+}
+
 @{
     ViewBag.Title = "Create a New Event";
 }
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Create", "Calendar", FormMethod.Post, new { @class = "form-horizontal", role = "form" })) 
+@using (Html.BeginForm("Create", "Calendar", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    
-        <div class="form-horizontal">
+
+    <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -55,7 +60,7 @@
             @Html.LabelFor(model => model.IsAllDay, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.CheckBoxFor(model => model.IsAllDay, new { @readonly = "readonly" } )
+                    @Html.CheckBoxFor(model => model.IsAllDay, new { @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.IsAllDay, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -65,8 +70,18 @@
             @Html.LabelFor(model => model.IsRepeating, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.CheckBoxFor(model => model.IsRepeating)
+                    @Html.CheckBoxFor(model => model.IsRepeating, new { id = "repeating" })
                     @Html.ValidationMessageFor(model => model.IsRepeating, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div id="frequencySelector" class="form-group" style="display:none">
+            @Html.LabelFor(model => model.Frequency, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="dropdown">
+                    @Html.DropDownListFor(model => model.Frequency, EnumHelper.GetSelectList(typeof(Calendar.Models.RepeatingFrequency)))
+                    @*@Html.EnumDropDownListFor(model => Model.Frequency, new { @id = "repeatingFrequency" })*@
                 </div>
             </div>
         </div>

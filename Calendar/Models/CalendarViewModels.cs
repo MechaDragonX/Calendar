@@ -41,9 +41,13 @@ namespace Calendar.Models
 
         [Display(Name = "All Day")]
         public bool IsAllDay { get; set; }
-
+        
         [Display(Name = "Repeating")]
         public bool IsRepeating { get; set; }
+
+        //[EnumDataType(typeof(Frequency))]
+        [Display(Name = "Frequency")]
+        public RepeatingFrequency Frequency { get; set; }
 
         [Display(Name = "Location")]
         public string Location { get; set; }

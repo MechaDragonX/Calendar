@@ -43,8 +43,8 @@ namespace Calendar
 
             // Calendar Scripts
             bundles.Add(new ScriptBundle("~/bundles/calendar").Include(
-                "~/Scripts/calendar/viewSelector.js"
-                ));
+                "~/Scripts/calendar/viewSelector.js",
+                "~/Scripts/calendar/frequencySelector.js"));
         }
     }
 }
