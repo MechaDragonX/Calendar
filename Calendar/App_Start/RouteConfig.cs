@@ -14,16 +14,18 @@ namespace Calendar
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+               name: "Default",
+               url: "{controller}/{action}/{id}",
+               defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+           );
 
             routes.MapRoute(
                 name: "Calendar",
                 url: "{controller}/{action}/{year}/{month}/{day}",
                 defaults: new { controller = "Calendar", action = "Month", year = UrlParameter.Optional, month = UrlParameter.Optional, day = UrlParameter.Optional }
             );
+
+
         }
     }
 }

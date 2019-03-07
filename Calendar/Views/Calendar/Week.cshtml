@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<Calendar.Models.EventViewModel>
 
+
+@Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/calendar")
 
 @{
@@ -206,10 +208,10 @@ else
 <div>
     @{
         IEnumerable<SelectListItem> dropDownList = new List<SelectListItem>
-        {
-            new SelectListItem { Text = "Month", Value = "Month:" + ViewBag.Year + ":" + ViewBag.Month },
-            new SelectListItem { Text = "Week", Value = "Week:" + ViewBag.Year + ":" + ViewBag.Month }
-        };
+    {
+        new SelectListItem { Text = "Month", Value = "Month:" + ViewBag.Year + ":" + ViewBag.Month },
+        new SelectListItem { Text = "Week", Value = "Week:" + ViewBag.Year + ":" + ViewBag.Month }
+    };
     }
     @Html.DropDownList("selector", dropDownList, "Select View")
 </div>

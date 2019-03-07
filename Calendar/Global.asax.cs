@@ -17,7 +17,7 @@ namespace Calendar
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            DocumentDBRepository<EventViewModel>.Initialize();
+            DocumentDBRepository<EventViewModel>.Initialize(); // Not initializing on school wifi
         }
     }
 }

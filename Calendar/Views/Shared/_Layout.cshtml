@@ -26,8 +26,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>
-                    <li>@Html.ActionLink("View Calendar", "Month", "Calendar", new { ViewBag.Year, ViewBag.Month }, null)</li>
+                    @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>*@
+                    <li>@Html.ActionLink("View Calendar", "Month", "Calendar", new { year = ViewBag.Year, month = ViewBag.Month }, null)</li>
                     <li>@Html.ActionLink("View All Events", "Details", "Calendar", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Create a New Event", "CreateEvent", "Calendar", new { area = "" }, null)</li>
                 </ul>

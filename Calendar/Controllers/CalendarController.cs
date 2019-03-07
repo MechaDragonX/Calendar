@@ -60,6 +60,7 @@ namespace Calendar.Controllers
         }
         
         // GET: Calendar/Calendar?year=x&month=y
+        [Route("{year}/{month}", Name = "Month", Order = 0)]
         public async Task<ActionResult> Month(int year, int month) // Month View
         {
             ViewBag.Year = year != 0 ? year : DateTime.Now.Year;

@@ -1,6 +1,7 @@
 @model IEnumerable<Calendar.Models.EventViewModel>
 
-@Scripts.Render("~/bundles/calendar")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/calendar");
 
 @{
     int daysInMonth = DateTime.DaysInMonth(ViewBag.Year, ViewBag.Month);
@@ -27,77 +28,89 @@
         @Html.ActionLink("Create a new event.", "Create")
     </p>
     <table class="table table-condensed table-fixedHead">
-        @*  *@
-        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                Start Time
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                End Time
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAllDay)
+            </th>
+            <th>
+                Repeating?
+            </th>
+            <th>
+                Repeating Frequency
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
             <tr>
-                <th class="col-md-1">
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th class="col-md-1">
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th class="col-md-1">
-                    Start Time
-                </th>
-                <th class="col-md-1">
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
-                <th class="col-md-1">
-                    End Time
-                </th>
-                <th class="col-md-1">
-                    @Html.DisplayNameFor(model => model.IsAllDay)
-                </th>
-                <th class="col-md-1">
-                    @Html.DisplayNameFor(model => model.IsRepeating)
-                </th>
-                <th class="col-md-1">
-                    @Html.DisplayNameFor(model => model.Location)
-                </th>
-                <th class="col-md-1">
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th class="col-md-1"></th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate.TimeOfDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate.TimeOfDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsAllDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsRepeating)
+                </td>
+                <td>
+                    @{
+                        if (item.Frequency == Calendar.Models.RepeatingFrequency.None)
+                        {
+                            string text = "Does not Repeat.";
+                            @text
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.Frequency)
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id, })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td class="col-md-1">
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td class="col-md-1">
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td class="col-md-1">
-                        @Html.DisplayFor(modelItem => item.StartDate.TimeOfDay)
-                    </td>
-                    <td class="col-md-1">
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td class="col-md-1">
-                        @Html.DisplayFor(modelItem => item.EndDate.TimeOfDay)
-                    </td>
-                    <td class="col-md-1">
-                        @Html.DisplayFor(modelItem => item.IsAllDay)
-                    </td>
-                    <td class="col-md-1">
-                        @Html.DisplayFor(modelItem => item.IsRepeating)
-                    </td>
-                    <td class="col-md-1">
-                        @Html.DisplayFor(modelItem => item.Location)
-                    </td>
-                    <td class="col-md-1">
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td class="col-md-1">
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id, })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>
-                </tr>
-            }
-        </tbody>
+        }
     </table>
 }
 else
@@ -149,10 +162,10 @@ else
 <div>
     @{
         IEnumerable<SelectListItem> dropDownList = new List<SelectListItem>
-        {
-            new SelectListItem { Text = "Month", Value = "Month:" + ViewBag.Year + ":" + ViewBag.Month },
-            new SelectListItem { Text = "Week", Value = "Week:" + ViewBag.Year + ":" + ViewBag.Month }
-        };
+{
+new SelectListItem { Text = "Month", Value = "Month:" + ViewBag.Year + ":" + ViewBag.Month },
+new SelectListItem { Text = "Week", Value = "Week:" + ViewBag.Year + ":" + ViewBag.Month }
+};
     }
     @Html.DropDownList("selector", dropDownList, "Select View")
 </div>
@@ -193,65 +206,98 @@ else
                             {
                                 if (current.Year == DateTime.Now.Year && current.Month == DateTime.Now.Month && current.Day == DateTime.Now.Day)
                                 {
-                                    <td style="border-left: 6px solid #1e90ff; background-color: #87ceff;">
-                                        <div>
-                                            @day
-                                        </div>
-                                        @{
-                                            foreach (var item in Model)
+                            <td style="border-left: 6px solid #1e90ff; background-color: #87ceff; padding-left: 0px; padding-right: 0px">
+                                <div>
+                                    @day
+                                </div>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        if ((item.StartDate.Year == current.Year && item.StartDate.Month == current.Month && item.StartDate.Day == current.Day) || (item.EndDate.Year == current.Year && item.EndDate.Month == current.Month && item.EndDate.Day == current.Day))
+                                        {
+                                            if (current.Day == item.StartDate.Day)
                                             {
-                                                if ((item.StartDate.Year == current.Year && item.StartDate.Month == current.Month && item.StartDate.Day == current.Day) || (item.EndDate.Year == current.Year && item.EndDate.Month == current.Month && item.EndDate.Day == current.Day))
-                                                {
-                                                    <div style="background-color: #ff6347; border: 1px solid black;">
-                                                        @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
-                                                    </div>
-                                                }
+                                                <div style="background-color: #ff6347; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black">
+                                                    @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
+                                                </div>
+                                            }
+                                            else if (current.Day == item.EndDate.Day)
+                                            {
+                                                <div style="background-color: #ff6347; border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black">&nbsp;</div>
                                             }
                                         }
-                                    </td>
+                                        else if (current > item.StartDate && current < item.EndDate)
+                                        {
+                                            <div style="background-color: #ff6347; border-top: 1px solid black; border-bottom: 1px solid black">&nbsp;</div>
+                                        }
+                                    }
+                                }
+                            </td>
                                 }
                                 else if (current.DayOfWeek.Equals(DayOfWeek.Saturday) || current.DayOfWeek.Equals(DayOfWeek.Sunday) && !(current.Year == DateTime.Now.Year && current.Month == DateTime.Now.Month && current.Day == DateTime.Now.Day))
                                 {
-                                    <td style="background-color: #00ee76;">
-                                        <div>
-                                            @day
-                                        </div>
-                                        @{
-                                            foreach (var item in Model)
+                            <td style="background-color: #00ee76; padding-left: 0px; padding-right: 0px">
+                                <div>
+                                    @day
+                                </div>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        if ((item.StartDate.Year == current.Year && item.StartDate.Month == current.Month && item.StartDate.Day == current.Day) || (item.EndDate.Year == current.Year && item.EndDate.Month == current.Month && item.EndDate.Day == current.Day))
+                                        {
+                                            if (current.Day == item.StartDate.Day)
                                             {
-                                                if ((item.StartDate.Year == current.Year && item.StartDate.Month == current.Month && item.StartDate.Day == current.Day) || (item.EndDate.Year == current.Year && item.EndDate.Month == current.Month && item.EndDate.Day == current.Day))
-                                                {
-                                                    <div style="background-color: #ff6347; border: 1px solid black;">
-                                                        @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
-                                                    </div>
-                                                }
+                                                <div style="background-color: #ff6347; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black">
+                                                    @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
+                                                </div>
+                                            }
+                                            else if (current.Day == item.EndDate.Day)
+                                            {
+                                                <div style="background-color: #ff6347; border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black">&nbsp;</div>
                                             }
                                         }
-                                    </td>
+                                        else if (current > item.StartDate && current < item.EndDate)
+                                        {
+                                            <div style="background-color: #ff6347; border-top: 1px solid black; border-bottom: 1px solid black">&nbsp;</div>
+                                        }
+                                    }
+                                }
+                            </td>
                                 }
                                 else
                                 {
-                                    <td class="col-md-1">
-                                        <div>
-                                            @day
-                                        </div>
-                                        @{
-                                            foreach (var item in Model)
+                            <td style="padding-left: 0px; padding-right: 0px">
+                                <div>
+                                    @day
+                                </div>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        if ((item.StartDate.Year == current.Year && item.StartDate.Month == current.Month && item.StartDate.Day == current.Day) || (item.EndDate.Year == current.Year && item.EndDate.Month == current.Month && item.EndDate.Day == current.Day))
+                                        {
+                                            if (current.Day == item.StartDate.Day)
                                             {
-                                                if ((item.StartDate.Year == current.Year && item.StartDate.Month == current.Month && item.StartDate.Day == current.Day) || (item.EndDate.Year == current.Year && item.EndDate.Month == current.Month && item.EndDate.Day == current.Day))
-                                                {
-                                                    <div style="background-color: #ff6347; border: 1px solid black;">
-                                                        @Html.ActionLink(item.Name.ToString(), "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
-                                                    </div>
-                                                }
+                                                <div style="background-color: #ff6347; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black">
+                                                    @Html.ActionLink(item.Name, "Day", "Calendar", new { current.Year, current.Month, current.Day }, null)
+                                                </div>
+                                            }
+                                            else if (current.Day == item.EndDate.Day)
+                                            {
+                                                <div style="background-color: #ff6347; border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black">&nbsp;</div>
                                             }
                                         }
-                                    </td>
+                                        else if (current > item.StartDate && current < item.EndDate)
+                                        {
+                                            <div style="background-color: #ff6347; border-top: 1px solid black; border-bottom: 1px solid black">&nbsp;</div>
+                                        }
+                                    }
+                                }
+                            </td>
                                 }
                             }
                             else
                             {
-                                <td class="col-md-1">
+                                <td>
                                     &nbsp;
                                 </td>
                             }
