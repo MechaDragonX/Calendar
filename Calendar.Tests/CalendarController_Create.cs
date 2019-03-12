@@ -21,16 +21,9 @@ namespace Calendar.Tests
         [TestMethod]
         public async Task StartDateAfterEnd()
         {
-            //Setup
-            EventViewModel event1 = new EventViewModel("", new DateTime(2019, 3, 10), new DateTime(2019, 3, 1));
-
-            //Test
-            var x = await controller.Create(event1);
-
-            //Assert
-            Assert.AreEqual(controller.ModelState.IsValid, false);
+            EventViewModel event1 = new EventViewModel("", new DateTime(2020, 3, 1), new DateTime(2019, 3, 1));
+            await controller.Create(event1);
+            Assert.IsFalse(controller.ModelState.IsValid);
         }
-
     }
-
 }

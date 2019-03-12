@@ -1,0 +1,19 @@
+{
+    "Id": "f2da9b19-785d-4068-88f9-a95498e02a23",
+    "Creator": "sonicraghav@gmail.com",
+    "CreationDateTime": "2019-03-04T00:09:13.4847181Z",
+    "Name": "An Event",
+    "StartDate": "2019-03-11T00:00:00",
+    "EndDate": "2019-03-15T00:00:00",
+    "IsAllDay": true,
+    "IsRepeating": true,
+    "Frequency": 2,
+    "Location": null,
+    "Description": null,
+    "id": "0e6c4d52-e127-7440-a1b2-e8548cb49e9c",
+    "_rid": "C2sFAMwZSp0CAAAAAAAAAA==",
+    "_self": "dbs/C2sFAA==/colls/C2sFAMwZSp0=/docs/C2sFAMwZSp0CAAAAAAAAAA==/",
+    "_etag": "\"00000000-0000-0000-d892-05f2196601d4\"",
+    "_attachments": "attachments/",
+    "_ts": 1552367477
+}

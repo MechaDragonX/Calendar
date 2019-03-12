@@ -1,0 +1,19 @@
+{
+    "Id": "0868e9d9-480d-45a7-a64d-9af5387b6216",
+    "Creator": "sonicraghav@gmail.com",
+    "CreationDateTime": "2019-03-07T18:06:05.7193894Z",
+    "Name": "TestEvent",
+    "StartDate": "2019-03-05T11:11:00",
+    "EndDate": "2019-03-05T10:00:00",
+    "IsAllDay": true,
+    "IsRepeating": false,
+    "Frequency": 0,
+    "Location": null,
+    "Description": null,
+    "id": "07bcc2bb-02dc-f30b-1e23-b590db38da2f",
+    "_rid": "C2sFAMwZSp0DAAAAAAAAAA==",
+    "_self": "dbs/C2sFAA==/colls/C2sFAMwZSp0=/docs/C2sFAMwZSp0DAAAAAAAAAA==/",
+    "_etag": "\"00000000-0000-0000-d892-3f16216001d4\"",
+    "_attachments": "attachments/",
+    "_ts": 1552367573
+}

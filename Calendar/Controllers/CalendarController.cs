@@ -114,7 +114,7 @@ namespace Calendar.Controllers
                 ModelState.Remove("EndTime");
                 if (model.StartDate > model.EndDate)
                 {
-                    Error("StartDate", "The Start Date must be before the End Date.");
+                    ModelState.AddModelError("StartDate", "The Start Date must be before the End Date.");
                 }
                 if (
                     model.StartDate.Year == model.EndDate.Year &&
@@ -124,7 +124,7 @@ namespace Calendar.Controllers
                 {
                     if (model.StartTime > model.EndTime)
                     {
-                        Error("StartTime", "The Start Time must be before the End Time.");
+                        ModelState.AddModelError("StartTime", "The Start Time must be before the End Time.");
                     }
                     else if (model.StartTime == model.EndTime)
                     {
@@ -162,15 +162,6 @@ namespace Calendar.Controllers
                 return View("CreateEvent");
             }
         }
-        /// <summary>
-        /// Adds an error to the model
-        /// </summary>
-        /// <param name="errorLocation">Model property</param>
-        /// <param name="errorMessage">Displayed message in view</param>
-        protected virtual void Error(string errorLocation, string errorMessage)
-        {
-            ModelState.AddModelError(errorLocation, errorMessage);
-        }
 
         // GET: Calendar/Edit/5
         public async Task<ActionResult> Edit(string creator, Guid id)
@@ -198,9 +189,9 @@ namespace Calendar.Controllers
         }
 
         // GET: Calendar/Delete/5
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(string creator, Guid id)
         {
-            await DocumentDBRepository<EventViewModel>.DeleteItemAsync(id);
+            await DocumentDBRepository<EventViewModel>.DeleteItemAsync(creator, id);
 
             return RedirectToAction("Details");
         }
