@@ -114,7 +114,25 @@ namespace Calendar.Controllers
                 ModelState.Remove("EndTime");
                 if (model.StartDate > model.EndDate)
                 {
-                    ModelState.AddModelError("StartDate", "The Start Date must be before the End Date.");
+                    Error("StartDate", "The Start Date must be before the End Date.");
+                }
+                if (
+                    model.StartDate.Year == model.EndDate.Year &&
+                    model.StartDate.Month == model.EndDate.Month &&
+                    model.StartDate.Day == model.EndDate.Day
+                   )
+                {
+                    if (model.StartTime > model.EndTime)
+                    {
+                        Error("StartTime", "The Start Time must be before the End Time.");
+                    }
+                    else if (model.StartTime == model.EndTime)
+                    {
+                        if ((model.StartTime.Hour == 12 && model.StartTime.Minute == 0) && model.IsAllDay == false)
+                        {
+                            model.IsAllDay = true;
+                        }
+                    }
                 }
                 if (model.Frequency == RepeatingFrequency.None)
                 {
@@ -143,6 +161,15 @@ namespace Calendar.Controllers
             {
                 return View("CreateEvent");
             }
+        }
+        /// <summary>
+        /// Adds an error to the model
+        /// </summary>
+        /// <param name="errorLocation">Model property</param>
+        /// <param name="errorMessage">Displayed message in view</param>
+        protected virtual void Error(string errorLocation, string errorMessage)
+        {
+            ModelState.AddModelError(errorLocation, errorMessage);
         }
 
         // GET: Calendar/Edit/5
