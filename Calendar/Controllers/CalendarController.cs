@@ -173,9 +173,9 @@ namespace Calendar.Controllers
         }
 
         // GET: Calendar/Edit/5
-        public async Task<ActionResult> Edit(Guid id)
+        public async Task<ActionResult> Edit(string creator, Guid id)
         {
-            EventViewModel item = await DocumentDBRepository<EventViewModel>.GetItemAsync(id);
+            EventViewModel item = await DocumentDBRepository<EventViewModel>.GetItemAsync(creator , id);
             item.StartTime = item.StartTime.Add(item.StartDate.TimeOfDay);
             item.EndTime =  item.EndTime.Add(item.EndDate.TimeOfDay);
             return View("EditEvent", item);

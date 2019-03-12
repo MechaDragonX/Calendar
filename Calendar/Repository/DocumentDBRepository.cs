@@ -96,7 +96,7 @@ namespace Calendar.Repository
             }
         }
 
-        public static async Task<Document> UpdateItemAsync(Guid id, T item)
+        public static async Task<Document> UpdateItemAsync( Guid id, T item)
         {
             try
             {
@@ -108,12 +108,11 @@ namespace Calendar.Repository
             }
         }
 
-        public static async Task<Document> DeleteItemAsync(Guid id)
+        public static async Task<Document> DeleteItemAsync(string creator, Guid id)
         {
             try
             {
-                // return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), new RequestOptions { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(id.ToString()) });
-                return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()));
+                return await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), new RequestOptions { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(creator) });
             }
             catch (Exception e)
             {
@@ -121,13 +120,12 @@ namespace Calendar.Repository
             }
         }
 
-        public static async Task<T> GetItemAsync(Guid id)
+        public static async Task<T> GetItemAsync(string creator, Guid id)
         {
             try
             {
-                // Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), new RequestOptions { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(id.ToString()) });
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()));
-
+                 Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), new RequestOptions { PartitionKey = new Microsoft.Azure.Documents.PartitionKey(creator) });
+              
                 return (T)(dynamic)document;
             }
             catch (DocumentClientException e)
