@@ -245,6 +245,8 @@ else
     </tr>
     @{
         int count = 0;
+        int previous = 0;
+        int after = 0;
         if (current.Day > 1)
         {
             count = current.Day;
@@ -257,8 +259,11 @@ else
                     {
                         if (count < firstDayOfWeek)
                         {
-                            <td class="col-md-1">
-                                &nbsp;
+                            <td style="color:gray">
+                                @{
+                                    previous = DateTime.DaysInMonth(ViewBag.Year, ViewBag.Month - 1) - (firstDayOfWeek - (count + 1));
+                                    @previous
+                                }
                             </td>
                         }
                     }
@@ -359,8 +364,11 @@ else
                         }
                         else
                         {
-                            <td style="padding-left: 0px; padding-right: 0px">
-                                &nbsp;
+                            <td style="color:gray">
+                                @{
+                                    after = (count - (firstDayOfWeek + daysInMonth)) + 1;
+                                    @after
+                                }
                             </td>
                         }
                         day++;
