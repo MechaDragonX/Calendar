@@ -21,11 +21,13 @@ namespace Calendar.Models
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the date when the event will begin.")]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:d}")]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the date when the event will end.")]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:d}")]
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 

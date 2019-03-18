@@ -4,7 +4,7 @@ namespace Calendar.Models
 {
     public enum RepeatingFrequency
     {
-        [Display(Name = " ")]
+        [Display(Name = "")]
         None,
         Daily,
         Weekly,

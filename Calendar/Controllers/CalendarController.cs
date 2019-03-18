@@ -1,13 +1,11 @@
 ﻿using Calendar.Models;
 using Microsoft.AspNet.Identity.Owin;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.IO;
 using Calendar.Repository;
 
 namespace Calendar.Controllers
@@ -90,8 +88,15 @@ namespace Calendar.Controllers
         public async Task<ActionResult> Day(int year, int month, int day)
         {
             DateTime current = new DateTime(year, month, day);
+            // Filter evnets by the user
             IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync(x => x.Creator.Equals(User.Identity.Name));
-            events = events.Where(x => (x.StartDate.Year == current.Year || x.EndDate.Year == current.Year) && (x.StartDate.Month == current.Month || x.EndDate.Month == current.Month) && (x.StartDate.Day == current.Day || x.EndDate.Day == current.Day));
+            // Select events that share the same year, month, and day values as the current day
+            events = events.Where(
+                x => 
+                    (x.StartDate.Year == current.Year || x.EndDate.Year == current.Year) &&
+                    (x.StartDate.Month == current.Month || x.EndDate.Month == current.Month) &&
+                    (x.StartDate.Day == current.Day || x.EndDate.Day == current.Day)
+                );
 
             return View("ViewEvent", events);
         }
@@ -99,6 +104,7 @@ namespace Calendar.Controllers
         // GET: Calendar/Details/5
         public async Task<ActionResult> Details()
         {
+            // Filter evnets by the user
             IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync( x => x.Creator.Equals(User.Identity.Name));
 
             return View("ViewEvent", events);
@@ -174,13 +180,17 @@ namespace Calendar.Controllers
 
         // POST: Calendar/Edit/5
         [HttpPost]
-        public ActionResult Edit(Guid id, EventViewModel model)
+        public async Task<ActionResult> Edit(Guid id, EventViewModel item)
         {
             try
             {
-                // TODO: Add update logic here
+                item.StartTime = item.StartTime.Add(item.StartDate.TimeOfDay);
+                item.EndTime = item.EndTime.Add(item.EndDate.TimeOfDay);
+                item.Creator = User.Identity.Name;
+                var x = await DocumentDBRepository<EventViewModel>.UpdateItemAsync(item.Creator, id, item);
+               
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Details");
             }
             catch
             {

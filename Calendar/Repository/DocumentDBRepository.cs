@@ -9,9 +9,6 @@ using System.Configuration;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Net;
-using Calendar.Models;
-using Newtonsoft.Json;
-using System.IO;
 
 namespace Calendar.Repository
 {
@@ -36,7 +33,7 @@ namespace Calendar.Repository
             }
             catch (DocumentClientException e)
             {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                if (e.StatusCode == HttpStatusCode.NotFound)
                 {
                     await client.CreateDatabaseAsync(new Database { Id = DatabaseId });
                 }
@@ -55,7 +52,7 @@ namespace Calendar.Repository
             }
             catch (DocumentClientException e)
             {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                if (e.StatusCode == HttpStatusCode.NotFound)
                 {
                     await client.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(DatabaseId),
@@ -98,11 +95,26 @@ namespace Calendar.Repository
             }
         }
 
-        public static async Task<Document> UpdateItemAsync( Guid id, T item)
+        /// <summary>
+        /// UpdateItemAsync
+        /// </summary>
+        /// <param name="creator">User who created the event</param>
+        /// <param name="id">Unique GUID assigned to each record when the event was created</param>
+        /// <param name="item">The individual event which is being updated</param>
+        /// <returns>Updated event</returns>
+        public static async Task<Document> UpdateItemAsync(string creator, Guid id, T item)
         {
             try
             {
-                return await client.UpsertDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), item);
+                return await client.UpsertDocumentAsync
+                    (
+                        UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                        item,
+                        new RequestOptions
+                        {
+                            PartitionKey = new PartitionKey(creator)
+                        }
+                    );
             }
             catch (Exception e)
             {
