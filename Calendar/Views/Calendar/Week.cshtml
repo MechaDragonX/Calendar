@@ -9,15 +9,14 @@
     DateTime firstDay = new DateTime(ViewBag.Year, ViewBag.Month, 1);
     DateTime lastDay = new DateTime(ViewBag.Year, ViewBag.Month, daysInMonth);
 
-    ViewBag.Title = firstDay.ToString("MMMM yyy");
+    ViewBag.Title = firstDay.ToString("MMMM yyy")
 
-    // Below Code is not needed , as  numberofWeeks will always be equal to 1 , in Week View !
-    //int numberOfWeeks = 4 + (daysInMonth % 7 != 0 ? 1 : 0);
-    //int firstDayOfWeek = (int)firstDay.DayOfWeek;
-    //if (firstDay.DayOfWeek != DayOfWeek.Sunday || lastDay.DayOfWeek != DayOfWeek.Saturday)
-    //{
-    //    numberOfWeeks++;
-    //}
+    int numberOfWeeks = 4 + (daysInMonth % 7 != 0 ? 1 : 0);
+    int firstDayOfWeek = (int)firstDay.DayOfWeek;
+    if (firstDay.DayOfWeek != DayOfWeek.Sunday || lastDay.DayOfWeek != DayOfWeek.Saturday)
+    {
+        numberOfWeeks++;
+    }
 
     int day = ViewBag.Day;
     DateTime current = new DateTime(ViewBag.Year, ViewBag.Month, day);
