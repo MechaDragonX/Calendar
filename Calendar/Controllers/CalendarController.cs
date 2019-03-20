@@ -104,7 +104,7 @@ namespace Calendar.Controllers
         // GET: Calendar/Details/5
         public async Task<ActionResult> Details()
         {
-            // Filter evnets by the user
+            // Filter events by the user
             IEnumerable<EventViewModel> events = await DocumentDBRepository<EventViewModel>.GetItemsAsync( x => x.Creator.Equals(User.Identity.Name));
 
             return View("ViewEvent", events);

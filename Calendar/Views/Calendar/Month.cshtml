@@ -200,7 +200,14 @@ new SelectListItem { Text = "Week", Value = "Week:" + ViewBag.Year + ":" + ViewB
                         {
                             <td style="color:gray">
                                 @{ 
-                                    previous = DateTime.DaysInMonth(ViewBag.Year, ViewBag.Month - 1) - (firstDayOfWeek - (count + 1));
+                                    if(ViewBag.Month > 1)
+                                    {
+                                        previous = DateTime.DaysInMonth(ViewBag.Year, ViewBag.Month - 1) - (firstDayOfWeek - (count + 1));
+                                    }
+                                    else if (ViewBag.Month == 1)
+                                    {
+                                        previous = DateTime.DaysInMonth(ViewBag.Year, 12) - (firstDayOfWeek - (count + 1));
+                                    }
                                     @previous
                                 }
                             </td>
