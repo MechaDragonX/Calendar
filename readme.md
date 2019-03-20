@@ -13,5 +13,12 @@
 <add key="authKey" value="Enter the Primary Key here"/>
 ```
 9. Save the file.
-10. Click the button in the top-center of the screen labelled `IIS Express (<Defualt Broswer>)`.
-11. Please wait for the application to launch.
+10. In the Cosmos DB Data Explorer, click `Explorer` on the side bar.
+11. Create a new Databse and name it `calendar`.
+12. Create a new Collection and fill the following fields in the following manner:
+Database id - `Use existing`, `calendar`
+Collection id - `events`
+Partition key - `/Creator`
+and click `Ok`.
+13. Click the button in the top-center of the screen labelled `IIS Express (<Defualt Broswer>)`.
+14. Please wait for the application to launch.
