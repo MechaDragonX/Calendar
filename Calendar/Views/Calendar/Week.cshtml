@@ -11,13 +11,13 @@
 
     ViewBag.Title = firstDay.ToString("MMMM yyy");
 
-    /** Below Code is not needed , as  numberofWeeks will always be equal to 1 , in Week View ! **/
-    int numberOfWeeks = 4 + (daysInMonth % 7 != 0 ? 1 : 0);
-    int firstDayOfWeek = (int)firstDay.DayOfWeek;
-    if (firstDay.DayOfWeek != DayOfWeek.Sunday || lastDay.DayOfWeek != DayOfWeek.Saturday)
-    {
-        numberOfWeeks++;
-    }
+    // Below Code is not needed , as  numberofWeeks will always be equal to 1 , in Week View !
+    //int numberOfWeeks = 4 + (daysInMonth % 7 != 0 ? 1 : 0);
+    //int firstDayOfWeek = (int)firstDay.DayOfWeek;
+    //if (firstDay.DayOfWeek != DayOfWeek.Sunday || lastDay.DayOfWeek != DayOfWeek.Saturday)
+    //{
+    //    numberOfWeeks++;
+    //}
 
     int day = ViewBag.Day;
     DateTime current = new DateTime(ViewBag.Year, ViewBag.Month, day);
@@ -29,9 +29,9 @@
 
 @if (Model.Count() > 0)
 {
-    <p>
-        @Html.ActionLink("Create a new event.", "Create")
-    </p>
+<p>
+    @Html.ActionLink("Create a new event.", "CreateEvent")
+</p>
     <table class="table table-condensed table-fixedHead">
         <tr>
             <th>
@@ -111,8 +111,8 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id, })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Edit", "Edit", new { creator = item.Creator, id = item.Id })
+                    @Html.ActionLink("Delete", "Delete", new { creator = item.Creator, id = item.Id })
                 </td>
             </tr>
         }
