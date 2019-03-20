@@ -9,7 +9,7 @@
     DateTime firstDay = new DateTime(ViewBag.Year, ViewBag.Month, 1);
     DateTime lastDay = new DateTime(ViewBag.Year, ViewBag.Month, daysInMonth);
 
-    ViewBag.Title = firstDay.ToString("MMMM yyy")
+    ViewBag.Title = firstDay.ToString("MMMM yyy");
 
     int numberOfWeeks = 4 + (daysInMonth % 7 != 0 ? 1 : 0);
     int firstDayOfWeek = (int)firstDay.DayOfWeek;
